@@ -1,5 +1,22 @@
 {   "title": "Kerangka Prestasi", 
     "pages": [
-        "xx"
+        "rmk",
+        "nasional-outcome",
+        "nasional-kpi",
+        "mp-latarbelakang",
+        "mp-outcome",
+        "mp-kpi",
+        "program-latarbelakang",
+        "program-outcome",
+        "program-kpi",
+        "aktiviti-latarbelakang",
+        "aktiviti-outcome",
+        "aktiviti-kpi",
+        "aktiviti-output",
+        "aktiviti-pi",
+        "semakan-aktiviti",
+        "semakan-program",
+        "semakan-kementerian",
+        "semakan-nasional"
     ]
   }

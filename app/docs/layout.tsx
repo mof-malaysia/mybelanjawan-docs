@@ -5,7 +5,15 @@ import { source } from '@/lib/source';
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <DocsLayout tree={source.pageTree} {...baseOptions}>
+    <DocsLayout
+      tree={source.pageTree}
+      {...baseOptions}
+      containerProps={{
+        style: {
+          '--fd-sidebar-width': '20rem',
+        } as React.CSSProperties,
+      }}
+    >
       {children}
     </DocsLayout>
   );

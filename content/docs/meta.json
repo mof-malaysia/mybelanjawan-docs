@@ -1,12 +1,10 @@
 { 
     "pages": [
-        "---Pengenalan---",
+        "---Panduan Permulaan---",
         "rumusan",
+        "logmasuk",
         "panduan-navigasi",
         "video-panduan-pengguna",
-        "---Permulaan Proses Belanjawan---",
-        "ciptabelanjawan",
-        "jemputan",
         "---Urusan Admin---",
         "pengguna",
         "tetapan-belanjawan",

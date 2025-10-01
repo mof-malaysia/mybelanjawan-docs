@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       tree={source.pageTree}
       {...baseOptions}
       containerProps={{
-        className: "md:[--fd-sidebar-width:320px]",
+        className: "md:[--fd-sidebar-width:20rem]",
       }}
     >
       {children}

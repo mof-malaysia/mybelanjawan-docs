@@ -1,5 +1,5 @@
 {
-  "name": "mybelanjawan",
+  "name": "mybelanjawan-docs",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
-    "next": "15.1.0",
+    "next": "15.1.11",
     "fumadocs-ui": "14.6.1",
     "fumadocs-core": "14.6.1",
     "react": "^19.0.0",

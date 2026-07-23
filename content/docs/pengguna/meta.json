@@ -1,8 +1,9 @@
-{   "title": "Tetapan Peranan Pengguna", 
+{   "title": "Tetapan Pengguna", 
     "pages": [
         "jemputan",
         "sistem",
         "kementerian",
+        "kebenaran-tetapan-semula-2fa",
         "organisasi",
         "senarai"
     ]

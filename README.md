@@ -24,3 +24,17 @@ npm run build    # output in dist/
   - `src/plugins/search-ignore-headings.mjs` (a Sätteri hast plugin registered in `astro.config.mjs`) keeps the generic "Panduan Bertulis" / "Panduan Video" headings out of results.
   - The `redirect/` hub pages set `pagefind: false`.
   - Styles are in the Search section of `src/styles/myds.css`.
+
+## Docker / Kubernetes
+
+The image is static: a Node stage builds the site, and only `dist/` is copied into an unprivileged nginx image (see `Dockerfile`).
+
+```
+docker build -t mybelanjawan-docs .
+docker run --rm -p 8080:8080 mybelanjawan-docs
+```
+
+- Listens on **8080** and runs as non-root (UID 101). Works with `readOnlyRootFilesystem: true` if `/tmp` is a writable `emptyDir`.
+- `/healthz` returns 200 for liveness/readiness probes.
+- nginx config is `nginx/default.conf`. Content-hashed files (`/_astro/*` and Pagefind's index data) are cached for a year, while pages and unhashed files revalidate on every request. Unknown paths return the site's 404 page.
+- The cluster is likely amd64; when building on Apple Silicon, use `docker buildx build --platform linux/amd64 …`.

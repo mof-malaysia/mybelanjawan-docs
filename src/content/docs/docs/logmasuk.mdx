@@ -1,0 +1,94 @@
+---
+title: Log Masuk & Keselamatan Akaun
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import Outcome from '../../../components/Outcome.astro';
+
+
+## Terima Jemputan dan Log Masuk Kali Pertama
+Langkah:
+1. Buka emel **Jemputan Pendaftaran di MyBelanjawan** dan klik pautan dalam emel tersebut
+![](./images/jemputan1.png)
+2. Klik **Terima Jemputan**
+![](./images/jemputan2.png)
+3. Isikan **Gelaran** dan **Nama**
+4. Klik butang **Daftar**
+5. Balik kepada peti emel dan buka emel **Log Masuk ke MyBelanjawan**
+6. Klik butang **Log Masuk**
+![](./images/logmasuk.png)
+
+<Outcome>
+Anda berjaya terima jemputan dan log masuk ke dalam sistem MyBelanjawan
+</Outcome>
+
+## Log Masuk - Kaedah Emel
+Langkah:
+1. Isikan emel anda pada medan **Emel (gov.my)**
+![](./images/app-homepage.png)
+2. Klik butang **Log masuk dengan Emel**
+3. Buka emel **Log Masuk ke MyBelanjawan** pada peti emel
+4. Klik butang **Log Masuk**
+![](./images/logmasuk.png)
+
+<Outcome>
+Anda berjaya log masuk ke dalam sistem MyBelanjawan
+</Outcome>
+
+## Log Masuk - Kaedah MyGovUC
+Langkah:
+1. Klik butang **Log masuk dengan MyGovUC**
+![](./images/app-homepage2.png)
+2. Log masuk ke akaun MyGovUC seperti biasa.
+
+<Outcome>
+Anda berjaya log masuk ke dalam sistem MyBelanjawan
+</Outcome>
+
+## Penetapan 2FA
+<Aside title="Pra-Syarat" type="caution">
+
+1. Sila pastikan tetapan Tarikh & Masa (_Date & Time_) pada telefon bimbit/laptop/PC ditetapkan kepada automatik (_Set Automatically/Use Network-Provided Time_) serta mempunyai sambungan internet yang stabil.
+2. Sila muat turun aplikasi _Google Authenticator_ pada _Google Play Store_ ataupun _Apple App Store_ pada telefon bimbit anda
+
+Pautan muat turun aplikasi _Google Authenticator_ adalah seperti berikut:
+* https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en
+* https://apps.apple.com/us/app/google-authenticator/id388497605 
+</Aside>
+
+Langkah:
+1. Klik **Tetapan Pengguna**
+![](./images/2FA-1.png)
+2. Klik butang **Aturkan** pada sudut kanan **Pengesahan Dua Langkah (2FA)**
+![](./images/2FA-2.png)
+3. Buka aplikasi _**Google Authenticator**_ pada telefon
+4. Klik butang _**Add a code**_ dan klik _**Scan a QR code**_
+![](./images/2FA-3.png)
+5. Imbas kod QR  
+![](./images/2FA-4.png)
+6. Masukkan kod 6-digit dalam ruang yang disediakan
+7. Klik butang **Sahkan**
+
+<Outcome>
+Anda telah berjaya menetapkan 2FA pada akaun anda 
+</Outcome>
+
+## Permohonan Tetapan Semula 2FA
+
+Langkah:
+![](./images/Permohonan-2FA-1.png)
+1. Klik Butang **Profil Pengguna**
+2. Klik **Tetapan Pengguna**
+3. Klik butang **Mohon Tetapan Semula** pada sudut kanan **Pengesahan Dua Langkah (2FA)**
+![](./images/Permohonan-2FA-2.png)
+4. Klik butang **Teruskan**
+5. Permohonan tetapan semula 2FA telah selesai. Anda akan menerima e-mel pengesahan bahawa permohonan tetapan semula 2FA anda sedang diproses.
+![](./images/Permohonan-2FA-4.png)
+
+<Outcome>
+Penyelaras MP atau Super Admin telah dimaklumkan untuk menyemak dan mengambil tindakan terhadap permohonan anda
+* Sekiranya tindakan telah diambil, anda akan menerima notifikasi emel untuk menetap semula 2FA pada akaun anda
+![](./images/Permohonan-2FA-3.png)
+* Sekiranya permohonan anda masih belum diambil tindakan selepas 24 jam, anda boleh mengulangi langkah-langkah ini untuk menghantar peringatan kepada Penyelaras MP atau Super Admin
+* Sila pastikan kod 2FA 6 digit terdahulu pada aplikasi Google Authenticator dipadamkan bagi mengelakkan kekeliruan
+</Outcome>

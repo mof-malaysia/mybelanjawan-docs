@@ -1,0 +1,23 @@
+---
+// Default <head>, plus the page's sidebar section as Pagefind metadata so search
+// results can be told apart (e.g. "Semakan BRO" exists under both OE and DE).
+import Default from '@astrojs/starlight/components/Head.astro';
+
+type Entry = { type: string; label: string; isCurrent?: boolean; entries?: Entry[] };
+
+/** Label of the innermost sidebar group that contains the current page. */
+function findSection(entries: Entry[], parent?: string): string | undefined {
+	for (const entry of entries) {
+		if (entry.type === 'link' && entry.isCurrent) return parent;
+		if (entry.type === 'group' && entry.entries) {
+			const found = findSection(entry.entries, entry.label);
+			if (found) return found;
+		}
+	}
+}
+
+const section = findSection(Astro.locals.starlightRoute.sidebar as Entry[]);
+---
+
+<Default />
+{section && <meta data-pagefind-meta="bahagian[content]" content={section} />}

@@ -1,0 +1,9 @@
+---
+// Light theme only: ignore any stored preference and the OS colour scheme.
+---
+
+{/* Inlined to avoid FOUC. */}
+<script is:inline>
+	document.documentElement.dataset.theme = 'light';
+	window.StarlightThemeProvider = { updatePickers() {} };
+</script>

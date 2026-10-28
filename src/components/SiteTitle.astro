@@ -1,0 +1,77 @@
+---
+// Crest + two-line lockup: "MyBelanjawan" over "Panduan Pengguna", so readers
+// can tell the docs apart from the app.
+import { Image } from 'astro:assets';
+import logo from '../assets/jata-logo.png';
+
+const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
+---
+
+<a href={siteTitleHref} class="site-title">
+	<Image src={logo} alt="Jata Negara" class="crest" height={64} />
+	<span class="name" translate="no">
+		<span class="name__title">{siteTitle}</span>
+		<span class="name__sub">Panduan Pengguna</span>
+	</span>
+</a>
+
+<style>
+	.site-title {
+		display: flex;
+		align-items: center;
+		gap: 0.625rem;
+		min-width: 0;
+		color: var(--sl-color-white);
+		text-decoration: none;
+	}
+
+	.crest {
+		flex-shrink: 0;
+		height: 2.25rem;
+		width: auto;
+	}
+
+	.name {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+		padding-inline-start: 0.625rem;
+		border-inline-start: 1px solid var(--sl-color-gray-5);
+		white-space: nowrap;
+	}
+
+	.name__title {
+		font-family: var(--myds-font-heading);
+		font-size: 1.125rem;
+		font-weight: 600;
+		line-height: 1.375rem;
+		letter-spacing: -0.01em;
+	}
+
+	.name__sub {
+		color: var(--sl-color-gray-3);
+		font-size: 0.75rem;
+		font-weight: 500;
+		line-height: 1rem;
+	}
+
+	.site-title:hover .name__sub {
+		color: var(--sl-color-accent-high);
+	}
+
+	/* Very narrow phones (~320px): tighten so the full name fits beside search + menu */
+	@media (max-width: 22.5rem) {
+		.site-title {
+			gap: 0.5rem;
+		}
+		.crest {
+			height: 1.875rem;
+		}
+		.name {
+			padding-inline-start: 0.5rem;
+		}
+		.name__title {
+			font-size: 1rem;
+		}
+	}
+</style>

@@ -1,0 +1,407 @@
+/*
+ * MYDS (Malaysia Government Design System) theme for Starlight.
+ * Tokens from ../myds/packages/style (color.css, light.css, dark.css, tailwind.config.css)
+ * and the MyBelanjawan app (../budgetmaster/apps/frontend).
+ */
+
+/* ---------- Typography (all modes) ---------- */
+:root {
+	--sl-font: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
+	--sl-font-mono: 'Roboto Mono Variable', 'Roboto Mono', ui-monospace, monospace;
+	--myds-font-heading: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+
+	/* MYDS heading scale: heading-sm/xs/2xs on mobile */
+	--sl-text-h1: 1.875rem;
+	--sl-text-h2: 1.5rem;
+	--sl-text-h3: 1.25rem;
+	--sl-text-h4: 1.125rem;
+	--sl-text-h5: 1rem;
+	--sl-line-height-headings: 1.3;
+
+	--myds-radius-sm: 6px;
+	--myds-radius: 8px;
+	--myds-radius-lg: 12px;
+	--myds-shadow-button: 0 1px 3px 0 rgb(0 0 0 / 0.07);
+	--myds-shadow-card: 0 2px 6px 0 rgb(0 0 0 / 0.05), 0 6px 24px 0 rgb(0 0 0 / 0.05);
+}
+
+@media (min-width: 50em) {
+	:root {
+		/* heading-md/sm/xs on desktop */
+		--sl-text-h1: 2.25rem;
+		--sl-text-h2: 1.875rem;
+		--sl-text-h3: 1.5rem;
+		--sl-text-h4: 1.25rem;
+	}
+}
+
+/* ---------- Colours — MYDS light.css (light theme only) ---------- */
+:root[data-theme='light'] {
+	color-scheme: light;
+
+	--sl-color-accent-low: #dbeafe; /* primary-100 */
+	--sl-color-accent: #2563eb; /* primary-600 */
+	--sl-color-accent-high: #1d4ed8; /* primary-700 */
+
+	--sl-color-white: #18181b; /* gray-900 = txt-black-900 */
+	--sl-color-gray-1: #27272a; /* gray-800 */
+	--sl-color-gray-2: #3f3f46; /* gray-700 = txt-black-700 */
+	--sl-color-gray-3: #6b6b74; /* gray-500 = txt-black-500 */
+	--sl-color-gray-4: #a1a1aa; /* gray-400 */
+	--sl-color-gray-5: #e4e4e7; /* gray-200 = otl-gray-200 */
+	--sl-color-gray-6: #f4f4f5; /* gray-100 = bg-washed */
+	--sl-color-gray-7: #fafafa; /* gray-50 */
+	--sl-color-black: #ffffff; /* bg-white */
+
+	--sl-color-bg-nav: #ffffff;
+	--sl-color-bg-sidebar: #fafafa; /* bg-gray-50 */
+	--sl-color-hairline-light: #f4f4f5;
+	--sl-color-hairline: #e4e4e7; /* otl-gray-200 */
+	--sl-color-hairline-shade: #d4d4d8;
+	--sl-color-bg-inline-code: #f4f4f5;
+
+	--myds-info-bg: #eff6ff; /* primary-50 */
+	--myds-info-border: #c2d5ff; /* primary-200 */
+	--myds-info-txt: #2563eb; /* primary-600 */
+	--myds-success-bg: #f0fdf4;
+	--myds-success-border: #bbf7d0;
+	--myds-success-txt: #15803d; /* success-700 */
+	--myds-warning-bg: #fefce8;
+	--myds-warning-border: #fef08a;
+	--myds-warning-txt: #a16207; /* warning-700 */
+	--myds-danger-bg: #fef2f2;
+	--myds-danger-border: #fecaca;
+	--myds-danger-txt: #b91c1c; /* danger-700 */
+
+	--myds-card-shadow: var(--myds-shadow-card);
+}
+
+/* ---------- Headings ---------- */
+/* Poppins only for large display headings (page title, h1, h2), as on the MYDS docs site;
+   everything else, h3 and below included, stays Inter. The site title wordmark is in
+   components/SiteTitle.astro. */
+.sl-markdown-content :is(h1, h2),
+h1#_top {
+	font-family: var(--myds-font-heading);
+	font-weight: 600;
+	letter-spacing: -0.01em;
+}
+
+.sl-markdown-content :is(h3, h4, h5, h6) {
+	font-weight: 600;
+}
+
+/* ---------- Sidebar (budgetmaster nav: rounded-lg, text-sm, font-medium) ---------- */
+#starlight__sidebar .top-level > li > details > summary .large {
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--sl-color-white);
+}
+
+/* Nested groups (e.g. Kerangka Prestasi) read as links, not as bigger headings */
+#starlight__sidebar .top-level > li > details > ul details > summary .large {
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--sl-color-gray-2);
+}
+
+#starlight__sidebar a {
+	border-radius: var(--myds-radius);
+	font-size: 0.875rem;
+}
+
+#starlight__sidebar a[aria-current='page'],
+#starlight__sidebar a[aria-current='page']:hover,
+#starlight__sidebar a[aria-current='page']:focus {
+	background-color: var(--sl-color-accent-low);
+	color: var(--myds-info-txt);
+	font-weight: 600;
+}
+
+/* ---------- Content ---------- */
+.sl-markdown-content img {
+	border: 1px solid var(--sl-color-hairline);
+	border-radius: var(--myds-radius-lg);
+	box-shadow: var(--myds-card-shadow);
+}
+
+.sl-markdown-content iframe {
+	max-width: 100%;
+	aspect-ratio: 16 / 9;
+	height: auto;
+	border: 1px solid var(--sl-color-hairline);
+	border-radius: var(--myds-radius-lg);
+}
+
+.sl-markdown-content a:not(:where(.not-content *)) {
+	color: var(--myds-info-txt);
+	text-underline-offset: 3px;
+}
+
+.sl-markdown-content code:not(:where(.not-content *)) {
+	border-radius: var(--myds-radius-sm);
+	padding: 0.125rem 0.375rem;
+}
+
+/* ---------- Asides → MYDS callouts (bordered, tinted, rounded) ---------- */
+.starlight-aside {
+	border: 1px solid var(--sl-color-asides-border);
+	border-radius: var(--myds-radius);
+	padding: 0.875rem 1rem;
+	color: var(--sl-color-gray-2);
+}
+
+.starlight-aside--note {
+	--sl-color-asides-text-accent: var(--myds-info-txt);
+	--sl-color-asides-border: var(--myds-info-border);
+	background-color: var(--myds-info-bg);
+}
+.starlight-aside--tip {
+	--sl-color-asides-text-accent: var(--myds-success-txt);
+	--sl-color-asides-border: var(--myds-success-border);
+	background-color: var(--myds-success-bg);
+}
+.starlight-aside--caution {
+	--sl-color-asides-text-accent: var(--myds-warning-txt);
+	--sl-color-asides-border: var(--myds-warning-border);
+	background-color: var(--myds-warning-bg);
+}
+.starlight-aside--danger {
+	--sl-color-asides-text-accent: var(--myds-danger-txt);
+	--sl-color-asides-border: var(--myds-danger-border);
+	background-color: var(--myds-danger-bg);
+}
+
+.starlight-aside__title {
+	font-size: 0.9375rem;
+	font-weight: 600;
+}
+
+.starlight-aside__icon {
+	font-size: 1.25em;
+}
+
+/* ---------- Link cards → MYDS cards ---------- */
+.sl-link-card {
+	border-color: var(--sl-color-gray-5);
+	border-radius: var(--myds-radius-lg);
+	background-color: var(--sl-color-black);
+	box-shadow: var(--myds-shadow-button);
+	transition:
+		border-color 150ms,
+		box-shadow 150ms;
+}
+
+.sl-link-card .title {
+	font-size: 1rem;
+}
+
+.sl-link-card:hover {
+	background-color: var(--sl-color-black);
+	border-color: var(--myds-info-border);
+	box-shadow: var(--myds-card-shadow);
+}
+
+.sl-link-card:hover .icon {
+	color: var(--myds-info-txt);
+}
+
+/* ---------- Prev/next pagination (compact, matches link cards) ---------- */
+.pagination-links {
+	/* Side by side on desktop, stacked on phones */
+	grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+	gap: 0.75rem;
+}
+
+.pagination-links a {
+	gap: 0.75rem;
+	padding: 0.75rem 1rem;
+	border-color: var(--sl-color-gray-5);
+	border-radius: var(--myds-radius-lg);
+	box-shadow: var(--myds-shadow-button);
+	/* "Sebelumnya" / "Seterusnya" label */
+	color: var(--sl-color-gray-3);
+	font-size: 0.75rem;
+	line-height: 1.125rem;
+	transition:
+		border-color 150ms,
+		box-shadow 150ms;
+}
+
+.pagination-links br {
+	display: none;
+}
+
+.pagination-links .link-title {
+	display: block;
+	margin-top: 0.125rem;
+	color: var(--sl-color-white);
+	font-size: 0.9375rem;
+	font-weight: 600;
+	line-height: 1.375rem;
+}
+
+.pagination-links svg {
+	font-size: 1rem;
+	color: var(--sl-color-gray-3);
+}
+
+.pagination-links a:hover {
+	border-color: var(--myds-info-border);
+	box-shadow: var(--myds-card-shadow);
+}
+
+.pagination-links a:hover :is(.link-title, svg) {
+	color: var(--myds-info-txt);
+}
+
+/* ---------- Mobile menu footer ---------- */
+/* Hide the footer (and its divider) if it ever renders with nothing in it */
+.mobile-preferences:not(:has(a, select)) {
+	display: none;
+}
+
+/* ---------- Search (Pagefind) ---------- */
+/* Dialog: white MYDS dialog with 12px corners and context-menu shadow */
+site-search dialog {
+	background-color: var(--sl-color-black);
+	border-color: var(--sl-color-gray-5);
+	box-shadow:
+		0 2px 6px 0 rgb(0 0 0 / 0.05),
+		0 12px 50px 0 rgb(0 0 0 / 0.1);
+}
+
+site-search dialog::backdrop {
+	background-color: rgb(24 24 27 / 0.4); /* gray-900 / 40% */
+}
+
+@media (min-width: 50rem) {
+	site-search dialog {
+		border-radius: var(--myds-radius-lg);
+	}
+}
+
+#starlight__search {
+	--sl-search-corners: var(--myds-radius-lg);
+	--myds-focus-ring: 0 0 0 3px rgb(150 183 255 / 0.4); /* fr-primary: primary-300 / 40% */
+}
+
+/* One MYDS focus ring instead of the browser outline */
+#starlight__search .pagefind-ui__search-input:focus,
+#starlight__search .pagefind-ui__search-clear:focus {
+	outline: none;
+}
+#starlight__search .pagefind-ui__search-input:focus-visible {
+	box-shadow: var(--myds-focus-ring);
+}
+#starlight__search .pagefind-ui__search-clear:focus-visible {
+	border-radius: var(--myds-radius);
+	box-shadow: var(--myds-focus-ring);
+}
+
+/* "N hasil untuk …" */
+#starlight__search .pagefind-ui__message {
+	color: var(--sl-color-gray-3);
+	font-size: 0.875rem;
+	font-weight: 500;
+}
+
+/* Result card: hairline border; the 1px gaps between rows read as dividers */
+#starlight__search .pagefind-ui__result-inner {
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: var(--myds-radius-lg);
+	background-color: var(--sl-color-gray-5);
+	overflow: hidden;
+}
+/* The card clips its own corners; per-row rounding breaks once the tag row is reordered */
+#starlight__search .pagefind-ui__result-inner > * {
+	border-radius: 0;
+}
+
+/* Hover/focus: tinted row instead of a square outline (no double focus indicator) */
+#starlight__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)):hover,
+#starlight__search .pagefind-ui__result-nested:hover {
+	outline: none;
+	background-color: var(--sl-color-gray-7);
+}
+#starlight__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)):focus-within,
+#starlight__search .pagefind-ui__result-nested:focus-within {
+	outline: none;
+	background-color: var(--myds-info-bg);
+	box-shadow: inset 0 0 0 2px rgb(150 183 255 / 0.8);
+}
+/* Section tag row follows its title's hover/focus tint */
+#starlight__search
+	.pagefind-ui__result-inner:has(> .pagefind-ui__result-title:hover)
+	> .pagefind-ui__result-tags {
+	background-color: var(--sl-color-gray-7);
+}
+#starlight__search
+	.pagefind-ui__result-inner:has(> .pagefind-ui__result-title:focus-within)
+	> .pagefind-ui__result-tags {
+	background-color: var(--myds-info-bg);
+}
+#starlight__search .pagefind-ui__result-title:has(~ .pagefind-ui__result-tags):focus-within {
+	box-shadow: none;
+}
+#starlight__search .pagefind-ui__result-link:focus,
+#starlight__search .pagefind-ui__result-link:focus-visible {
+	outline: none;
+}
+#starlight__search .pagefind-ui__result-nested:hover .pagefind-ui__result-link,
+#starlight__search .pagefind-ui__result-title:hover .pagefind-ui__result-link {
+	color: var(--myds-info-txt);
+}
+
+/* Section tag ("Bahagian: Perbelanjaan Mengurus (OE)") sits right under the page title */
+#starlight__search .pagefind-ui__result-inner > .pagefind-ui__result-title {
+	order: -2;
+}
+#starlight__search .pagefind-ui__result-title:has(~ .pagefind-ui__result-tags) {
+	padding-bottom: 0.25rem;
+}
+#starlight__search .pagefind-ui__result-tags {
+	order: -1;
+	margin-top: -1px; /* close the divider gap so title + tag read as one row */
+	padding-top: 0;
+	padding-inline-start: var(--sl-search-result-pad-inline-start);
+}
+#starlight__search .pagefind-ui__result-tag {
+	padding: 0;
+	background: none;
+	color: var(--sl-color-gray-3);
+	font-size: 0.75rem;
+	font-weight: 500;
+}
+
+/* Snippets: 14px, matched words highlighted in primary-100 */
+#starlight__search .pagefind-ui__result-excerpt {
+	font-size: 0.875rem;
+	line-height: 1.375rem;
+}
+#starlight__search mark {
+	padding: 0 0.125rem;
+	border-radius: 3px;
+	background-color: var(--sl-color-accent-low);
+	color: var(--sl-color-gray-1);
+	font-weight: 600;
+}
+
+/* "Papar lebih banyak hasil": MYDS secondary button */
+#starlight__search .pagefind-ui__button {
+	height: 2.25rem;
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: var(--myds-radius);
+	background-color: var(--sl-color-black);
+	box-shadow: var(--myds-shadow-button);
+	color: var(--sl-color-white);
+	font-size: 0.875rem;
+	font-weight: 500;
+}
+#starlight__search .pagefind-ui__button:hover {
+	background-color: var(--sl-color-gray-7);
+}
+#starlight__search .pagefind-ui__button:focus-visible {
+	outline: none;
+	box-shadow: var(--myds-focus-ring);
+}

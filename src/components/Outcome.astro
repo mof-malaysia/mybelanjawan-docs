@@ -1,0 +1,13 @@
+---
+// "Outcome" callout: Starlight's tip aside (MYDS success) with a check-circle icon.
+// Same markup as <Aside>, but the title is left out of the search index; every
+// page has one, so indexing it floods results for "outcome".
+import { Icon } from '@astrojs/starlight/components';
+---
+
+<aside aria-label="Outcome" class="starlight-aside starlight-aside--tip">
+	<p class="starlight-aside__title" aria-hidden="true" data-pagefind-ignore>
+		<Icon name="approve-check-circle" class="starlight-aside__icon" />Outcome
+	</p>
+	<div class="starlight-aside__content"><slot /></div>
+</aside>

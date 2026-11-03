@@ -1,0 +1,143 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+env:
+  AWS_REGION: "ap-southeast-1"
+  APP_ECR_REPO: "mybelanjawan-docs"
+  KUSTOMIZATION_ECR_REPO: "mybelanjawan-docs/kustomization"
+  STAGE_KUSTOMIZATION_PATH: ".kube/overlays/staging"
+  PROD_KUSTOMIZATION_PATH: ".kube/overlays/production"
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      deploy_env: ${{ steps.set-env.outputs.deploy_env }}
+      kustomization_path: ${{ steps.set-env.outputs.kustomization_path }}
+      kustomization_tag: ${{ steps.set-env.outputs.kustomization_tag }}
+    steps:
+      - name: Determine environment
+        id: set-env
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            echo "deploy_env=prod" >> "${GITHUB_OUTPUT}"
+            TAG_NAME="${GITHUB_REF#refs/tags/v}"
+            echo "kustomization_tag=${TAG_NAME}" >> "${GITHUB_OUTPUT}"
+            echo "kustomization_path=${{ env.PROD_KUSTOMIZATION_PATH }}" >> "${GITHUB_OUTPUT}"
+          elif [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            echo "deploy_env=stage" >> "${GITHUB_OUTPUT}"
+            echo "kustomization_tag=staging" >> "${GITHUB_OUTPUT}"
+            echo "kustomization_path=${{ env.STAGE_KUSTOMIZATION_PATH }}" >> "${GITHUB_OUTPUT}"
+          else
+            echo "Unsupported ref: ${GITHUB_REF}" >&2
+            exit 1
+          fi
+
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    needs: prepare
+    outputs:
+      app_version: ${{ steps.app-image.outputs.app_version }}
+    env:
+      DEPLOY_ENV: ${{ needs.prepare.outputs.deploy_env }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.MB_AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.MB_AWS_SECRET }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.APP_ECR_REPO }}
+          tags: |
+            type=sha,prefix=staging-,format=short,enable=${{ env.DEPLOY_ENV == 'stage' }}
+            type=semver,pattern=v{{version}},enable=${{ env.DEPLOY_ENV == 'prod' }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Log out of Amazon ECR
+        run: docker logout ${{ steps.login-ecr.outputs.registry }}
+
+      - name: Capture app image tag
+        id: app-image
+        run: |
+          VERSION=$(echo '${{ steps.meta.outputs.json }}' | jq -r '."tag-names"[0]')
+          echo "app_version=$VERSION" >> "${GITHUB_OUTPUT}"
+
+  push-kustomization:
+    runs-on: ubuntu-latest
+    needs:
+      - prepare
+      - build-and-push-image
+    env:
+      KUSTOMIZATION_PATH: ${{ needs.prepare.outputs.kustomization_path }}
+      KUSTOMIZATION_TAG: ${{ needs.prepare.outputs.kustomization_tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.MB_AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.MB_AWS_SECRET }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Setup oras
+        uses: oras-project/setup-oras@v1
+
+      - name: Build and zip kustomize manifests
+        run: |
+          FULL_IMAGE="${{ steps.login-ecr.outputs.registry }}/${{ env.APP_ECR_REPO }}:${{ needs.build-and-push-image.outputs.app_version }}"
+
+          echo "Using Image: $FULL_IMAGE"
+
+          set -o pipefail && kubectl kustomize "${{ env.KUSTOMIZATION_PATH }}" | sed "s|\${APP_IMAGE}|$FULL_IMAGE|g" > manifests.yaml
+          tar -czf manifests.tar.gz -C . manifests.yaml
+
+      - name: Push kustomize manifests to ECR
+        run: |
+          oras push \
+            "${{ steps.login-ecr.outputs.registry }}/${{ env.KUSTOMIZATION_ECR_REPO }}:${{ env.KUSTOMIZATION_TAG }}" \
+            manifests.tar.gz:application/gzip
+
+      - name: Log out of Amazon ECR
+        run: docker logout ${{ steps.login-ecr.outputs.registry }}

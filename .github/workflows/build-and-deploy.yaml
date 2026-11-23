@@ -31,7 +31,7 @@ jobs:
             TAG_NAME="${GITHUB_REF#refs/tags/v}"
             echo "kustomization_tag=${TAG_NAME}" >> "${GITHUB_OUTPUT}"
             echo "kustomization_path=${{ env.PROD_KUSTOMIZATION_PATH }}" >> "${GITHUB_OUTPUT}"
-          elif [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+          elif [[ "${GITHUB_REF}" == "refs/heads/v2" ]]; then
             echo "deploy_env=stage" >> "${GITHUB_OUTPUT}"
             echo "kustomization_tag=staging" >> "${GITHUB_OUTPUT}"
             echo "kustomization_path=${{ env.STAGE_KUSTOMIZATION_PATH }}" >> "${GITHUB_OUTPUT}"
